@@ -1,4 +1,5 @@
 node_modules/
+%ProgramData%/
 .expo/
 dist/
 npm-debug.*
