@@ -1,3 +1,4 @@
+import React from 'react';
 import {Text, View, FlatList} from 'react-native';
 
 const data = {
@@ -14,7 +15,7 @@ export default function HomePage() {
             ocupation: occupations[Math.ceil(Math.random() * occupations.length - 1)]
         }
 
-        data.users.push(user)
+        data.users.push(user);
     }
 
     return (

@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, SafeAreaView, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, Image, Alert } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function LoginPage({navigation}) {
@@ -9,8 +11,31 @@ export default function LoginPage({navigation}) {
 
   const signInLogo = require('../../../assets/login.png');
 
-  const login = () => {
-    navigation.navigate('Home')
+  const login = async () => {
+    try {
+      const response = await fetch('http://192.168.20.9:8000/user/login', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: pass
+        })
+      });
+
+      console.log('response::', response);
+
+      if(response.status === 200){
+        const access_token = await response.json()
+        console.log('token::', access_token['Token'])
+        await AsyncStorage.setItem('access_token', access_token['Token']);
+        navigation.replace('Home1');
+      }
+    } catch (error) {
+      console.log('error al realizar la peticion', error);
+    }
   }
 
   function goToSignUp() {
@@ -20,11 +45,11 @@ export default function LoginPage({navigation}) {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
-        <Image source={signInLogo} style={{ resizeMethod: 'resize', resizeMode: 'contain', height: '80%' }}></Image>
+        <Image source={signInLogo} style={{resizeMode: 'contain', height: '80%' }}></Image>
       </View>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <TextInput style={styles.textInput} onChangeText={onChangeEmail} value={email} placeholder='Correo'></TextInput>
-        <TextInput style={styles.textInput} onChangePass={onChangePass} value={pass} placeholder='Contraseña'></TextInput>
+        <TextInput style={styles.textInput} onChangeText={onChangePass} secureTextEntry={true} value={pass} placeholder='Contraseña'></TextInput>
         <View style={{ width: '80%' }}>
           <Text style={{ textAlign: 'right', marginRight: 10, marginTop: 10, color: 'blue' }}>Recuperar contraseña</Text>
         </View>
