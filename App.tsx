@@ -117,39 +117,5 @@ const App = () => {
       </NavigationContainer>
     </AuthContext.Provider>
   );
-
-  /* useEffect(() => {
-    AsyncStorage.getItem('accessToken').then((accessToken) => {
-      console.log('accessToken::', accessToken);
-
-      accessToken ? setHomeRoot('Home') : setHomeRoot('Login');
-      console.log('root:', rootRoute);
-    })
-  }, [rootRoute]) */
-
-
-  //TODO: change headerBackVisible to false for correct functionality
-  /* return (
-    //dont use the same name for the stack and the tab, are tabs routes? investigate this later
-    <NavigationContainer>
-      <RootStack.Navigator>
-        {
-          rootRoute === 'Login' ? (
-            <>
-              <RootStack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
-              <RootStack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-            </>
-          ) : (
-            <>
-              <RootStack.Screen name="Home" component={HomePage} options={({ route }) => ({
-                headerTitle: getFocusedRouteNameFromRoute(route) ?? 'Inicio',
-              })} />
-              <RootStack.Screen name="Profile" component={ProfilePage} />
-            </>
-          )
-        }
-      </RootStack.Navigator>
-    </NavigationContainer>
-  ); */
 };
 export default App;
